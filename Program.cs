@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 
 namespace NumberTracker
 {
@@ -43,7 +46,16 @@ namespace NumberTracker
                     var number = int.Parse(input);
                     numbers.Add(number);
                 }
+
             }
+            var fileWriter = new StreamWriter("numbers.csv");
+            // Create an object that can write CSV to the fileWriter
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+            // Ask our csvWriter to write out our list of numbers
+            csvWriter.WriteRecords(numbers);
+            // Tell the file we are done
+            fileWriter.Close();
         }
+
     }
 }
