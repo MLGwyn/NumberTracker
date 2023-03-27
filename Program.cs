@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace NumberTracker
 {
@@ -12,9 +13,48 @@ namespace NumberTracker
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Number Tracker");
+            // Creates a stream reader to get information from our file
+            // var fileReader = new StreamReader("numbers.csv");
+            // Creates a stream reader to get information from our file
+            TextReader reader;
 
+            // If the file exists
+            if (File.Exists("numbers.csv"))
+            {
+                // Assign a StreamReader to read from the file
+                reader = new StreamReader("numbers.csv");
+            }
+            else
+            {
+                // Assign a StringReader to read from an empty string
+                reader = new StringReader("");
+            }
+            // Create a configuration that indicates this CSV file has no header
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                // Tell the reader not to interpret the first
+                // row as a "header" since it is just the
+                // first number.
+                HasHeaderRecord = false,
+            };
+            // Create a CSV reader to parse the stream into CSV format
+            var csvReader = new CsvReader(reader, config);
+            // Creates a list of numbers we will be tracking
+            //
+            //            reader
+            //                      read rows from the stream
+            //                                 each row is an int
+            //                                        Give me back a List (List<int>)
+            var numbers = csvReader.GetRecords<int>().ToList();
+            // Close the reader
+            reader.Close();
+
+
+            // old code before adding fileReader
             // - Create an empty list of numbers.
-            var numbers = new List<int>();
+            // var numbers = new List<int>();
+
+
 
             // Controls if we are still running our loop asking for more numbers
             var isRunning = true;
