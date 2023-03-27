@@ -13,22 +13,12 @@ namespace NumberTracker
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Number Tracker");
-            // Creates a stream reader to get information from our file
-            // var fileReader = new StreamReader("numbers.csv");
-            // Creates a stream reader to get information from our file
-            TextReader reader;
 
-            // If the file exists
-            if (File.Exists("numbers.csv"))
-            {
-                // Assign a StreamReader to read from the file
-                reader = new StreamReader("numbers.csv");
-            }
-            else
-            {
-                // Assign a StringReader to read from an empty string
-                reader = new StringReader("");
-            }
+            // var numbers = new List<int>();
+            // if (File.Exists("numbers.csv"))
+            // {
+            // Creates a stream reader to get information from our file
+            var fileReader = new StreamReader("numbers.csv");
             // Create a configuration that indicates this CSV file has no header
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -38,7 +28,7 @@ namespace NumberTracker
                 HasHeaderRecord = false,
             };
             // Create a CSV reader to parse the stream into CSV format
-            var csvReader = new CsvReader(reader, config);
+            var csvReader = new CsvReader(fileReader, config);
             // Creates a list of numbers we will be tracking
             //
             //            reader
@@ -46,9 +36,10 @@ namespace NumberTracker
             //                                 each row is an int
             //                                        Give me back a List (List<int>)
             var numbers = csvReader.GetRecords<int>().ToList();
-            // Close the reader
-            reader.Close();
 
+            // Close the reader
+            fileReader.Close();
+            // }
 
             // old code before adding fileReader
             // - Create an empty list of numbers.
